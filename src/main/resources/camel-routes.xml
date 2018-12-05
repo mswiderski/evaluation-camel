@@ -1,0 +1,18 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+    
+    <route id="processes">
+        <from uri="jbpm:events:process:eval"/>
+        <filter>
+          <simple>${in.header.EventType} == 'afterProcessStarted'</simple>
+          <to uri="log:EVAL.processes?level=WARN&amp;showBody=true&amp;showHeaders=true"/>
+        </filter>
+    </route>
+    
+    <route id="tasks">
+        <from uri="jbpm:events:task:eval"/>
+        <filter>
+          <simple>${in.header.EventType} starts with 'before'</simple>
+          <to uri="log:EVAL.tasks?level=WARN&amp;showBody=true&amp;showHeaders=true"/>
+        </filter>
+    </route>
+</routes>
